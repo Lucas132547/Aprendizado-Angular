@@ -1,0 +1,223 @@
+input,
+textarea {
+  box-sizing: border-box;
+  border-radius: 4px;
+  border: 1px solid #CED4DA;
+  width: 100%;
+  margin: 8px 0 12px 0;
+  padding: 6px 12px;
+  font-family: 'Montserrat';
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%;
+}
+
+input#redes {
+  border-radius: 0 4px 4px 0;
+  padding: 0 12px;
+}
+
+input#aniversario {
+  width: 224px;
+  display: block;
+}
+
+label[for="redes"] {
+  display: block;
+}
+
+textarea {
+  height: 84px;
+}
+
+label {
+  font-family: 'Montserrat';
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 27px;
+  letter-spacing: 0;
+  text-align: left;
+}
+
+input::placeholder,
+textarea::placeholder {
+  font-family: 'Montserrat';
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 23px;
+  letter-spacing: 0;
+  text-align: left;
+  color: #b9cbe5;
+}
+
+input:focus {
+  outline: none;
+}
+
+.span-http {
+  width: 72px;
+  height: 37px;
+  border-radius: 4px 0 0 4px;
+  border: 1px solid #CED4DA;
+  background-color: #E9ECEF;
+  font-family: 'Montserrat';
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 23px;
+  margin: 8px 0 12px;
+  line-height: 37px;
+  padding: 0 12px;
+  text-align: center;
+}
+
+.input-container {
+  display: flex;
+  align-items: stretch;
+}
+
+.botoes {
+  display: flex;
+  justify-content: space-between;
+}
+
+.botao-cancelar,
+.botao-salvar,
+.botao-desabilitado {
+  width: 196px;
+  height: 41px;
+  padding: 6px, 12px;
+  border-radius: 4px;
+  border: 1px;
+  gap: 8px;
+  font-family: 'Montserrat';
+  font-size: 18px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.botao-cancelar {
+  color: #0D6EFD;
+  background-color: #FFFFFF;
+  border: 1px solid #0D6EFD;
+  cursor: pointer;
+}
+
+.botao-salvar {
+  color: #FFFFFF;
+  background-color: #0D6EFD;
+  cursor: pointer;
+}
+
+.botao-desabilitado {
+  background-color: #ADB5BD;
+  color: #6C757D;
+  cursor: not-allowed;
+}
+.cabecalho .link button{
+  color: #0958d0;
+}
+
+.imagem-contato i {
+  margin-top: 8px;
+}
+
+.imagem-contato label {
+  font-family: 'Montserrat';
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 23px;
+  letter-spacing: 0px;
+  text-align: center;
+  color: #6C757D;
+  margin: 0;
+  cursor: pointer;
+}
+
+.imagem-contato {
+  width: 104px;
+  height: 104px;
+  border: 1px dotted #ADB5BD;
+  margin: 32px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  border-radius: 4px;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+.imagem-contato input[type="file"] {
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.mensagem-erro {
+  color: red;
+  font-size: 12px;
+  margin-top: 4px;
+  text-align: center;
+}
+
+.preview-avatar {
+  max-width: 100px;
+  max-height: 120px;
+  object-fit: cover;
+  margin: 0 auto 24px;
+  height: auto;
+  border-radius: 8px;
+}
+
+.botao-upload {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: 'Montserrat';
+  font-size: 13px;
+  font-weight: 400;
+  color: #6C757D;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  padding: 4px;
+}
+.botao-upload span {
+  color: #495057;
+}
+.botao-upload i {
+  font-size: 20px;
+  margin-bottom: 4px;
+}
+figure {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+}
+#avatar-desc {
+  display: block;
+  text-align: center;
+  font-family: 'Montserrat';
+  font-size: 14px;
+}
+fieldset {
+  border: 1px solid #CED4DA;
+  margin-bottom: 12px;
+  margin-top: 12px;
+}
+fieldset legend {
+  font-family: 'Montserrat';
+  font-size: 18px;
+  font-weight: 400;
+}

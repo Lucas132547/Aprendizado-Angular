@@ -1,0 +1,133 @@
+<app-container>
+  <app-cabecalho
+    [bannerSrc]="'/assets/adicionar-contato.png'"
+    [titulo]="'Adicionar contato'">
+  </app-cabecalho>
+
+  <form [formGroup]="contatoForm" (ngSubmit)="salvarContato()">
+
+    <fieldset>
+      <legend>Imagem do Contato</legend>
+
+      <div class="imagem-contato">
+      <input 
+        type="file" 
+        accept="image/*" 
+        id="avatar"
+        required
+        (change)="aoSelecionarArquivo($event)"
+        #inputArquivo
+        aria-describedby="avatar-desc"
+        >
+
+        <label for="avatar" class="botao-upload">
+          <i class="material-icons" aria-hidden="true">add</i>
+          <span>Adicione a Imagem de contato</span>
+        </label>  
+    </div>
+
+    <span>Campo Obrigatorio. Apenas imagens são permitidas.</span>
+
+    @if(contatoForm.get('avatar')?.value !== '') {
+      <figure>
+        <img
+        [src]="contatoForm.get('avatar')?.value"
+        class="preview-avatar"
+        alt="Avatar do contato selecionado"
+      >
+      </figure>
+    }
+    </fieldset>
+
+    <label for="nome">Nome</label>
+    <input
+      type="text"
+      id="nome"
+      formControlName="nome"
+      placeholder="Coloque o nome do contato"
+      aria-required="true"
+      aria-describedby="nome-erro"
+      [attr.aria-invalid]="contatoForm.get('nome')?.invalid"
+    />
+    <app-mensagem-erro
+      [control]="obterControle('nome')"
+      id="nome-erro">
+    </app-mensagem-erro>
+
+    <label for="telefone">Telefone</label>
+    <input
+      type="tel"
+      id="telefone"
+      formControlName="telefone"
+      aria-required="true"
+      placeholder="Coloque o número de telefone"
+      aria-describedby="telefone-erro"
+      [attr.aria-invalid]="contatoForm.get('telefone')?.invalid"
+    />
+    <app-mensagem-erro
+      [control]="obterControle('telefone')"
+      id="telefone-erro">
+    </app-mensagem-erro>
+
+    <label for="email">Email</label>
+    <input
+      type="email"
+      id="email"
+      formControlName="email"
+      placeholder="Coloque o email do contato"
+      aria-required="true"
+      aria-describedby="email-erro"
+      [attr.aria-invalid]="contatoForm.get('email')?.invalid"
+    />
+    <app-mensagem-erro
+      [control]="obterControle('email')"
+      id="email-erro">
+      
+    </app-mensagem-erro>
+
+    <app-separador></app-separador>
+
+    <label for="aniversario">Data de Nascimento</label>
+    <input
+      type="date"
+      id="aniversario"
+      formControlName="aniversario"
+    />
+
+    <label for="redes">Redes Sociais</label>
+    <div class="input-container">
+      <span class="span-http" aria-hidden="true">http://</span>
+      <input
+        type="url"
+        id="redes"
+        placeholder="Adicione a URL da página"
+        formControlName="redes"
+      />
+    </div>
+
+    <label for="Observações">Observações</label>
+    <textarea
+      type="text"
+      id="Observações"
+      placeholder="Exemplo: Instrutora da academia Nova Imagem"
+      formControlName="observacoes"
+    ></textarea>
+
+    <section class="botoes">
+      <button
+        (click)="cancelar()"
+        class="botao-cancelar"
+        type="button">
+        Cancelar
+      </button>
+      <button
+        type="submit"
+        [attr.aria-disabled]="contatoForm.invalid"
+        [ngClass]="contatoForm.valid ? 'botao-salvar' : 'botao-desabilitado'">
+        Salvar Contato
+      </button>
+    </section>
+
+  </form>
+  
+</app-container>
