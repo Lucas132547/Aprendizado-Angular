@@ -4,7 +4,7 @@ import { CardComponent } from './card.component';
 import { Product } from '../../../types/product.inteface';
 import { By } from '@angular/platform-browser';
 
-describe('CardComponent', () => {
+fdescribe('CardComponent', () => {
   let component: CardComponent;
   let fixture: ComponentFixture<CardComponent>;
 
@@ -50,4 +50,61 @@ describe('CardComponent', () => {
 
 
   })
+
+  it('must emit the event onDelete when pressed',() => {
+
+    const product: Product = {
+      id: 2,
+      title: 'Sansung',
+      price: 800,
+      category: 'eletronico',
+      description: 'Smartphone',
+      image: 'src/assets/image/png'
+    }
+
+    component.product = product;
+    fixture.detectChanges();
+
+    const spy = spyOn(component.onDelete, 'emit')
+
+    component.isManagable = true;
+
+    fixture.detectChanges();
+
+    const managableElement = fixture.debugElement.query(By.css('span')).nativeElement;
+    expect(managableElement).not.toBeNull();
+
+    component.onDeleteClick();
+    expect(spy).toHaveBeenCalledWith(product);
+
+  })
+
+   it('must emit the event onEdit when pressed',() => {
+
+    const product: Product = {
+      id: 2,
+      title: 'Sansung',
+      price: 800,
+      category: 'eletronico',
+      description: 'Smartphone',
+      image: 'src/assets/image/png'
+    }
+
+    component.product = product;
+    fixture.detectChanges();
+
+    const spy = spyOn(component.onEdit, 'emit')
+
+    component.isManagable = true;
+
+    fixture.detectChanges();
+
+    const managableElement = fixture.debugElement.query(By.css('span')).nativeElement;
+    expect(managableElement).not.toBeNull();
+
+    component.onEditClick();
+    expect(spy).toHaveBeenCalledWith(product);
+
+  })
+
 });

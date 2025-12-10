@@ -3,7 +3,7 @@
 /dist
 
 # Angular Cache
-/.angular/cache
+.angular/cache
 /out-tsc
 
 # Coverage/Test reports
