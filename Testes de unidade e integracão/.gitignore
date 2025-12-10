@@ -1,8 +1,9 @@
-# Dependency directory
+# Dependencies
 /node_modules
-
-# Build output
 /dist
+
+# Angular Cache
+/.angular/cache
 /out-tsc
 
 # Coverage/Test reports
@@ -23,5 +24,3 @@ Thumbs.db
 # Environment variables (often containing secrets)
 .env
 
-# Angular Cache
-/.angular/cache
