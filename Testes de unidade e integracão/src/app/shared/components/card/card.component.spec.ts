@@ -20,7 +20,9 @@ describe('CardComponent', () => {
   });
 
   it('should create', () => {
+
     expect(component).toBeTruthy();
+    
   });
 
   it('should render the product in the template',() => {
