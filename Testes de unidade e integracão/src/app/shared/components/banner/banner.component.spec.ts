@@ -20,4 +20,15 @@ describe('BannerComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should render the given title', () => {
+
+    const titulo = 'teste to titulo';
+    component.title = titulo;
+    fixture.detectChanges();
+    const element = fixture.nativeElement.querySelector('app-banner')
+    expect(element.textContent).toContain(titulo);
+
+  })
+  
 });

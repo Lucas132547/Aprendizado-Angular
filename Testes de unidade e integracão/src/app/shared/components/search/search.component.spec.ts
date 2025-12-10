@@ -20,4 +20,15 @@ describe('SearchComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should emit searchText when onInputChange is called', () =>  {
+
+    const value = 'iPhone 15'
+    const event = { target: {value}} as unknown as Event;
+    const spy = spyOn(component.searchText, 'emit');
+
+    component.onInputChange(event);
+
+    expect(spy).toHaveBeenCalledWith(value);
+  })
 });
