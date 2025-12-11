@@ -1,8 +1,10 @@
+import { CommonModule } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { CardComponent } from './card.component';
-import { Product } from '../../../types/product.inteface';
+import { MatIconModule } from '@angular/material/icon';
 import { By } from '@angular/platform-browser';
+
+import { Product } from '../../../types/product.inteface';
+import { CardComponent } from './card.component';
 
 describe('CardComponent', () => {
   let component: CardComponent;
@@ -10,34 +12,37 @@ describe('CardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CardComponent]
+      imports: [
+        CommonModule,
+        MatIconModule,
+        CardComponent
+      ]
     })
     .compileComponents();
-    
+  });
+
+  beforeEach(() => {
     fixture = TestBed.createComponent(CardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
   it('should create', () => {
-
     expect(component).toBeTruthy();
-    
   });
 
-  it('should render the product in the template',() => {
+  it('deve renderizar as propriedades do produto no template', () => {
     const product: Product = {
-      id: 1,
-      title: 'iPhone 15',
-      price: 1000,
-      category: 'eletronico',
-      description: 'Smartphone',
-      image: 'src/assets/image/png'
-    }
+      id: 3,
+      title: 'Macbook Pro',
+      category: 'eletronics',
+      description: 'Laptop',
+      price: 2000,
+      image: 'src/macbook-pro.png'
+   };
 
     component.product = product;
     fixture.detectChanges();
-    
 
     const productImg = fixture.debugElement.query(By.css('img')).nativeElement;
     const productTitle = fixture.debugElement.query(By.css('h2')).nativeElement;
@@ -47,28 +52,22 @@ describe('CardComponent', () => {
     expect(productImg.src).toContain(product.image);
     expect(productTitle.textContent).toContain(product.title);
     expect(productDescription.textContent).toContain(product.description);
-    expect(productPrice.textContent).toContain(product.price);
+    expect(productPrice.textContent).toContain(`R$ ${product.price}`);
+  });
 
-
-
-  })
-
-  it('must emit the event onDelete when pressed',() => {
-
+  it('deve emitir o evento onDelete quando onDeleteClick for chamado', () => {
     const product: Product = {
-      id: 2,
-      title: 'Sansung',
-      price: 800,
-      category: 'eletronico',
+      id: 1,
+      title: 'iPhone 15',
+      category: 'eletronics',
       description: 'Smartphone',
-      image: 'src/assets/image/png'
-    }
+      price: 1000,
+      image: 'src/iphone-15.png'
+    };
+
+    const spy = jest.spyOn(component.onDelete, 'emit');
 
     component.product = product;
-    fixture.detectChanges();
-
-    const spy = spyOn(component.onDelete, 'emit')
-
     component.isManagable = true;
 
     fixture.detectChanges();
@@ -78,25 +77,20 @@ describe('CardComponent', () => {
 
     component.onDeleteClick();
     expect(spy).toHaveBeenCalledWith(product);
+  });
 
-  })
-
-   it('must emit the event onEdit when pressed',() => {
-
+  it('deve emitir o evento onEdit quando onEditClick for chamado', () => {
     const product: Product = {
       id: 2,
-      title: 'Sansung',
-      price: 800,
-      category: 'eletronico',
+      title: 'Samsung s22',
+      category: 'eletronics',
       description: 'Smartphone',
-      image: 'src/assets/image/png'
-    }
+      price: 1000,
+      image: 'src/samsung-s22.png'
+   };
 
+    const spy = jest.spyOn(component.onEdit, 'emit');
     component.product = product;
-    fixture.detectChanges();
-
-    const spy = spyOn(component.onEdit, 'emit')
-
     component.isManagable = true;
 
     fixture.detectChanges();
@@ -105,8 +99,7 @@ describe('CardComponent', () => {
     expect(managableElement).not.toBeNull();
 
     component.onEditClick();
+
     expect(spy).toHaveBeenCalledWith(product);
-
-  })
-
+  });
 });
