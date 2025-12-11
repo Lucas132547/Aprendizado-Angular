@@ -1,0 +1,26 @@
+# Dependencies
+/node_modules
+/dist
+
+# Angular Cache
+.angular/cache
+/out-tsc
+
+# Coverage/Test reports
+/coverage
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+
+# IDE/OS files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Environment variables (often containing secrets)
+.env
+
