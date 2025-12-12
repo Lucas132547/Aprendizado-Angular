@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { CadastroService } from '../../shared/services/cadastro.service';
 import { BehaviorSubject, Observable, of, startWith, switchMap, tap } from 'rxjs';
 import { Cidade, Estado, IbgeService } from '../../shared/services/ibge.service';
+import { cpfValidator } from '../../shared/validators/cpf.validator';
 
 export const senhasIguaisValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
   const senha = control.get('senha');
@@ -27,7 +28,7 @@ export class DadosPessoaisFormComponent {
   dadosPessoaisForm!: FormGroup;
 
   estado$!: Observable<Estado[]>;
-  cidade$!: Observable<Cidade[]>;
+  cidades$!: Observable<Cidade[]>;
 
   carregandoCidades$ = new BehaviorSubject<boolean>(false);
 
@@ -48,6 +49,7 @@ export class DadosPessoaisFormComponent {
     
     this.dadosPessoaisForm = this.fb.group({
       nomeCompleto: ['', Validators.required],
+      cpf: ['', [Validators.required, cpfValidator]],
       estado: ['', Validators.required],
       cidade: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
@@ -83,7 +85,7 @@ export class DadosPessoaisFormComponent {
   private configurarListenerEstado(): void {
     const estadoControl = this.dadosPessoaisForm.get('estado');
     if (estadoControl) {
-      this.cidade$ = estadoControl.valueChanges.pipe(
+      this.cidades$ = estadoControl.valueChanges.pipe(
         startWith(''), 
         tap(() => {
           this.resetarCidade();
