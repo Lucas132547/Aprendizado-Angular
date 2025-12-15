@@ -24,6 +24,10 @@ export class LivrosService {
     return this.httpClient.get<Livro[]>(this.API_URL);
   }
 
+  obterLivroPorId(id: string): Observable<Livro> {
+    return this.httpClient.get<Livro>(`${this.API_URL}/${id}`);
+  }
+
   organizarLivrosPorGenero(): Observable<Map<string, Livro[]>> {
     return this.obterLivros().pipe(
       map((livros: Livro[]) => {
@@ -50,6 +54,13 @@ export class LivrosService {
 
    atualizarFavotitoLivro(livro: Livro): Observable<Livro> {
     return this.httpClient.patch<Livro>(`${this.API_URL}/${livro.id}`, {favorito: livro.favorito});
+  }
+   editarLivro(livro: Livro): Observable<Livro> {
+    return this.httpClient.put<Livro>(`${this.API_URL}/${livro.id}`, {livro});
+  }
+
+  excluirLivro(id: string): Observable<void> {
+    return this.httpClient.delete<void>(`${this.API_URL}/${id}`);
   }
 
 }
