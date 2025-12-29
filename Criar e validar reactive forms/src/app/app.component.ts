@@ -1,16 +1,19 @@
 import { Component } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
+
 import { RouterOutlet } from '@angular/router';
+
 import { HeaderComponent } from './shared/components/header/header.component';
 import { FooterComponent } from './shared/components/footer/footer.component';
 
+
 const COMPONENTS = [
   HeaderComponent,
-  FooterComponent,
-  RouterOutlet
+  FooterComponent
 ];
 
 const MODULES = [
+  RouterOutlet,
   ReactiveFormsModule
 ];
 
@@ -18,9 +21,8 @@ const MODULES = [
   selector: 'app-root',
   imports: [
     ...COMPONENTS,
-    ...MODULES,
-    RouterOutlet
-],
+    ...MODULES
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

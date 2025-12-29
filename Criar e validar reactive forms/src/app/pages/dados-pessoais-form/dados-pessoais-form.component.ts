@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
+import { CadastroService } from './../../shared/services/cadastro.service';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators, AbstractControl, ValidatorFn, AbstractControlOptions } from '@angular/forms';
-import { ButtonComponent } from '../../shared/components/button/button.component';
+import { AbstractControl, AbstractControlOptions, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { CadastroService } from '../../shared/services/cadastro.service';
+import { ButtonComponent } from '../../shared/components/button/button.component';
 import { BehaviorSubject, Observable, of, startWith, switchMap, tap } from 'rxjs';
 import { Cidade, Estado, IbgeService } from '../../shared/services/ibge.service';
 import { cpfValidator } from '../../shared/validators/cpf.validator';
@@ -11,8 +11,12 @@ import { cpfValidator } from '../../shared/validators/cpf.validator';
 export const senhasIguaisValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
   const senha = control.get('senha');
   const confirmaSenha = control.get('confirmaSenha');
-  return senha && confirmaSenha && senha.value !== confirmaSenha.value ? { senhasNaoIguais: true } : null;
-}
+
+  return senha && confirmaSenha && senha.value === confirmaSenha.value
+    ? null
+    : { senhasNaoIguais: true };
+};
+
 @Component({
   selector: 'app-dados-pessoais-form',
   standalone: true,
@@ -24,7 +28,7 @@ export const senhasIguaisValidator: ValidatorFn = (control: AbstractControl): Va
   templateUrl: './dados-pessoais-form.component.html',
   styleUrls: ['./dados-pessoais-form.component.scss']
 })
-export class DadosPessoaisFormComponent {
+export class DadosPessoaisFormComponent implements OnInit {
   dadosPessoaisForm!: FormGroup;
 
   estado$!: Observable<Estado[]>;
@@ -36,17 +40,14 @@ export class DadosPessoaisFormComponent {
     private fb: FormBuilder,
     private router: Router,
     private cadastroService: CadastroService,
-    private ibgeService: IbgeService,
-
-  ) {
-    
-  }
+    private ibgeService: IbgeService
+  ) {}
 
   ngOnInit(): void {
     const formOptions: AbstractControlOptions = {
       validators: senhasIguaisValidator
-    }
-    
+    };
+
     this.dadosPessoaisForm = this.fb.group({
       nomeCompleto: ['', Validators.required],
       cpf: ['', [Validators.required, cpfValidator]],
@@ -57,63 +58,68 @@ export class DadosPessoaisFormComponent {
       confirmaSenha: ['', Validators.required]
     }, formOptions);
 
-    this.carregandoEstados();
+    this.carregarEstados();
     this.configurarListenerEstado();
 
+  }
+
+  senhasIguaisValidator(group: FormGroup): {[key: string]: any} | null {
+    const senha = group.get('senha')?.value;
+    const confirmaSenha = group.get('confirmaSenha')?.value;
+
+    return senha === confirmaSenha ? null : { senhasNaoIguais: true };
   }
 
   onAnterior(): void {
     this.salvarDadosAtuais();
     this.router.navigate(['/cadastro/area-atuacao']);
-
   }
 
   onProximo(): void {
     if (this.dadosPessoaisForm.valid) {
       this.salvarDadosAtuais();
       this.router.navigate(['/cadastro/confirmacao']);
-    }else {
+    } else {
       this.dadosPessoaisForm.markAllAsTouched();
     }
-
   }
 
-  private carregandoEstados(): void {
-    this.estado$ = this.ibgeService.getEstados();
-  }
-
-  private configurarListenerEstado(): void {
-    const estadoControl = this.dadosPessoaisForm.get('estado');
-    if (estadoControl) {
-      this.cidades$ = estadoControl.valueChanges.pipe(
-        startWith(''), 
-        tap(() => {
-          this.resetarCidade();
-          this.carregandoCidades$.next(true);
-        }),
-        switchMap(sigla => {
-          if (sigla) {
-            return this.ibgeService.getCidadesPorEstado(sigla).pipe(
-              tap(() => this.carregandoCidades$.next(false))
-            )
-          }   
-
-          this.carregandoCidades$.next(false);
-          return of([]);
-        })
-      );
-    }
-  }
-  private salvarDadosAtuais() {
+  private salvarDadosAtuais(): void {
     const formValue = this.dadosPessoaisForm.value;
-
     this.cadastroService.updateCadastroData({
       nomeCompleto: formValue.nomeCompleto,
       estado: formValue.estado,
       cidade: formValue.cidade,
       email: formValue.email,
       senha: formValue.senha
-    })
+    });
+  }
+
+  private carregarEstados(): void {
+    this.estado$ = this.ibgeService.getEstados();
+  }
+
+  private configurarListenerEstado(): void {
+    const estadoControl = this.dadosPessoaisForm.get('estado');
+
+    if (estadoControl) {
+      this.cidades$ = estadoControl.valueChanges.pipe(
+        startWith(''),
+        tap(() => {
+          this.resetarCidade();
+          this.carregandoCidades$.next(true);
+        }),
+        switchMap(uf => {
+          if (uf) {
+            return this.ibgeService.getCidadesPorEstado(uf).pipe(
+              tap(() => this.carregandoCidades$.next(false))
+            );
+          }
+          this.carregandoCidades$.next(false);
+          return of([]);
+        })
+      );
+    }
   }
 
   private resetarCidade(): void {
