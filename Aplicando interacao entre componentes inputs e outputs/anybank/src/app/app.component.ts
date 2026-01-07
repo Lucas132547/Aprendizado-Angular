@@ -1,0 +1,40 @@
+import { Component, computed } from '@angular/core';
+import { BannerComponent } from './components/banner/banner.component';
+import { FormNovaTransacaoComponent } from './components/form-nova-transacao/form-nova-transacao.component';
+import { TipoTransacao, Transacao } from './modelos/transacao';
+import { signal } from '@angular/core';
+import { ExtratoComponent } from "./components/extrato/extrato.component";
+
+@Component({
+  selector: 'app-root',
+  imports: [BannerComponent, FormNovaTransacaoComponent, ExtratoComponent],
+  templateUrl: './app.component.html',
+  styleUrl: './app.component.css',
+})
+export class AppComponent {
+  title = 'anybank';
+
+  transacoes = signal<Transacao[]>([]);
+
+  saldo = computed(() => {
+    return this.transacoes().reduce((acc, transacaoAtual) => {
+      switch (transacaoAtual.tipo) {
+        case TipoTransacao.DEPOSITO:
+          return acc + transacaoAtual.valor;
+        case TipoTransacao.SAQUE:
+            return acc - transacaoAtual.valor;
+        default:
+          throw new Error('Tipo de transação inválido');
+      }
+    }, 0);
+  });
+
+  processarTransacao(transacao: Transacao) {
+    if (transacao.tipo === TipoTransacao.SAQUE && transacao.valor > this.saldo()) {
+      alert('Saldo insuficiente');
+      return; // This "return" stops the function so the list never updates
+    }
+    
+    this.transacoes.update((listaAtual) => [transacao, ...listaAtual]);
+  }
+}
